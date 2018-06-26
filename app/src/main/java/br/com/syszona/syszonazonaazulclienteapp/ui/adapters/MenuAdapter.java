@@ -1,10 +1,12 @@
 package br.com.syszona.syszonazonaazulclienteapp.ui.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -22,9 +24,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     public static class MenuViewHolder extends RecyclerView.ViewHolder {
         TextView optionMenu;
+        ImageView option_icon;
         public MenuViewHolder(View itemView) {
             super(itemView);
             optionMenu = itemView.findViewById(R.id.optionsMenu);
+            option_icon = itemView.findViewById(R.id.option_icon);
         }
     }
 
@@ -37,7 +41,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MenuViewHolder holder, int position) {
-        holder.optionMenu.setText(String.valueOf(menuList.get(position)));
+        holder.optionMenu.setText(String.valueOf(menuList.get(position).getOption()));
+        holder.option_icon.setImageDrawable(menuList.get(position).getIcon());
     }
 
     @Override

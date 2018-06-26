@@ -150,8 +150,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Pressione novamente para sair", Toast.LENGTH_SHORT).show();
-
+        message("Pressione novamente para sair",getApplicationContext(),1);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

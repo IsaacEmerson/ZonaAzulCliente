@@ -9,7 +9,7 @@
     </style>
 
     <style name="LinearProgress" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">#0627f1</item>
+        <item name="colorAccent">#09abd4</item>
     </style>
 
 </resources>

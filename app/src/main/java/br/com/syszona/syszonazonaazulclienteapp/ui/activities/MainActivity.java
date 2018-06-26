@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         menuList = Arrays.asList(
                 new Menu("Teste",getResources().getDrawable(R.drawable.ic_lock)),
-                new Menu("Testando",getResources().getDrawable(R.drawable.ic_lock))
+                new Menu("Testando",getResources().getDrawable(R.drawable.ic_eye))
         );
 
         binding.mainMenu.setLayoutManager(new LinearLayoutManager(this));

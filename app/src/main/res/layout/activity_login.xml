@@ -14,7 +14,7 @@
         android:id="@+id/login_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="22dp"
         android:gravity="center_horizontal"
         android:text="Syszona Cliente"
@@ -38,7 +38,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="40dp">
+            android:paddingTop="25dp">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -76,7 +76,6 @@
 
             <CheckBox
                 android:id="@+id/keepConected"
-                android:paddingTop="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center"
                 android:textColor="#7e7c7c"
@@ -96,7 +95,9 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
                 android:background="#406ad8"
                 android:text="Login"
                 android:textAllCaps="false"
@@ -119,16 +120,15 @@
         android:layout_marginTop="16dp"
         android:indeterminate="true"/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/user_profile_photo"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_below="@+id/login_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/user_background_login"
         android:elevation="4dp"
-        android:src="@drawable/ic_user" />
+        android:src="@mipmap/logo_100" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
