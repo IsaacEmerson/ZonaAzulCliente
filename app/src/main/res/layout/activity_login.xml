@@ -109,16 +109,14 @@
 
     <ProgressBar
         android:id="@+id/pb"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="39dp"
+        android:indeterminate="true"
         android:theme="@style/LinearProgress"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:visibility="gone"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:elevation="5dp"
-        android:layout_below="@+id/login_title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:indeterminate="true"/>
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/user_profile_photo"
@@ -127,10 +125,11 @@
         android:layout_below="@+id/login_title"
         android:layout_centerHorizontal="true"
         android:elevation="4dp"
-        android:src="@mipmap/logo_100" />
+        android:src="@mipmap/logo_200" />
 
 
     <LinearLayout
+        android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
@@ -142,7 +141,7 @@
             android:background="#1e3b87"
             android:gravity="center"
             android:text="Ainda não é cadastrado?"
-            android:textColor="#949393"
+            android:textColor="#d1cfcf"
             android:textSize="16sp"/>
     </LinearLayout>
 

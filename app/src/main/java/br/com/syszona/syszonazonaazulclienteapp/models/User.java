@@ -1,4 +1,5 @@
 package br.com.syszona.syszonazonaazulclienteapp.models;
+
 import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,12 +10,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "id",
         "name",
         "email",
-        "cities_id",
-        "cities_current",
+        "city_id",
+        "active",
+        "cell_phone",
+        "cpf",
         "created_at",
         "updated_at"
 })
-public class User implements Serializable {
+public class User implements Serializable
+{
 
     @JsonProperty("id")
     private Integer id;
@@ -22,15 +26,51 @@ public class User implements Serializable {
     private String name;
     @JsonProperty("email")
     private String email;
-    @JsonProperty("cities_id")
-    private Integer citiesId;
-    @JsonProperty("cities_current")
-    private Integer citiesCurrent;
+    @JsonProperty("city_id")
+    private Integer cityId;
+    @JsonProperty("active")
+    private Boolean active;
+    @JsonProperty("cell_phone")
+    private Object cellPhone;
+    @JsonProperty("cpf")
+    private Object cpf;
     @JsonProperty("created_at")
     private String createdAt;
     @JsonProperty("updated_at")
     private String updatedAt;
-    private final static long serialVersionUID = 7941754445266185113L;
+    private final static long serialVersionUID = 8589120119470569956L;
+
+    /**
+     * No args constructor for use in serialization
+     *
+     */
+    public User() {
+    }
+
+    /**
+     *
+     * @param updatedAt
+     * @param id
+     * @param cityId
+     * @param email
+     * @param createdAt
+     * @param name
+     * @param cellPhone
+     * @param active
+     * @param cpf
+     */
+    public User(Integer id, String name, String email, Integer cityId, Boolean active, Object cellPhone, Object cpf, String createdAt, String updatedAt) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.cityId = cityId;
+        this.active = active;
+        this.cellPhone = cellPhone;
+        this.cpf = cpf;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
     @JsonProperty("id")
     public Integer getId() {
@@ -62,24 +102,44 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    @JsonProperty("cities_id")
-    public Integer getCitiesId() {
-        return citiesId;
+    @JsonProperty("city_id")
+    public Integer getCityId() {
+        return cityId;
     }
 
-    @JsonProperty("cities_id")
-    public void setCitiesId(Integer citiesId) {
-        this.citiesId = citiesId;
+    @JsonProperty("city_id")
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
     }
 
-    @JsonProperty("cities_current")
-    public Integer getCitiesCurrent() {
-        return citiesCurrent;
+    @JsonProperty("active")
+    public Boolean getActive() {
+        return active;
     }
 
-    @JsonProperty("cities_current")
-    public void setCitiesCurrent(Integer citiesCurrent) {
-        this.citiesCurrent = citiesCurrent;
+    @JsonProperty("active")
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    @JsonProperty("cell_phone")
+    public Object getCellPhone() {
+        return cellPhone;
+    }
+
+    @JsonProperty("cell_phone")
+    public void setCellPhone(Object cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    @JsonProperty("cpf")
+    public Object getCpf() {
+        return cpf;
+    }
+
+    @JsonProperty("cpf")
+    public void setCpf(Object cpf) {
+        this.cpf = cpf;
     }
 
     @JsonProperty("created_at")

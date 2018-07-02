@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edit1"
+            android:background="@drawable/custom_button_white"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:drawableLeft="@mipmap/visa"
+            android:drawableRight="@mipmap/circle"
+            android:drawableTint="#59494e"
+            android:enabled="false"
+            android:singleLine="true"
+            android:hint=" **** **** **** **** 1234 "
+            android:inputType="textEmailAddress" />
+
+    <Button
+        android:layout_margin="10dp"
+        android:text="Adicionar outro cartão"
+        android:background="@drawable/custom_button_white"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    <Button
+        android:layout_margin="10dp"
+        android:text="Confirmar"
+        android:background="@drawable/custom_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+</LinearLayout>
