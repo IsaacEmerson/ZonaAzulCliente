@@ -1,4 +1,4 @@
-package br.com.syszona.syszonazonaazulclienteapp.ui.activities;
+package br.com.syszona.syszonazonaazulclienteapp.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

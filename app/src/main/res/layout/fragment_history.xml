@@ -7,7 +7,7 @@
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="64dp"
-    tools:context=".ui.activities.HistoryFragment">
+    tools:context=".ui.activities.fragments.HistoryFragment">
 
     <LinearLayout
         android:orientation="vertical"

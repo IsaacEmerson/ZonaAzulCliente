@@ -2,6 +2,7 @@ package br.com.syszona.syszonazonaazulclienteapp.ui.activities;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -12,22 +13,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import br.com.syszona.syszonazonaazulclienteapp.R;
-import br.com.syszona.syszonazonaazulclienteapp.models.User;
-import br.com.syszona.syszonazonaazulclienteapp.providers.RetrofitConfig;
-import br.com.syszona.syszonazonaazulclienteapp.utils.UserSession;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.AlarmsFragment;
+import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.BuyCreditsFragment;
+import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.HistoryFragment;
+import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.MainFragment;
+import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.MyCreditCardsFragment;
+import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.ProfileFragment;
+import static br.com.syszona.syszonazonaazulclienteapp.utils.MessageUtil.message;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    User user;
-    TextView userName;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +34,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        userName = findViewById(R.id.userName);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -48,7 +45,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         displayFrag(R.id.home);
-        getUserData();
 
     }
 
@@ -57,9 +53,18 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (doubleBackToExitPressedOnce) {
             super.onBackPressed();
+            return;
         }
+        this.doubleBackToExitPressedOnce = true;
+        message("Pressione novamente para sair",getApplicationContext(),1,null);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
     @Override
@@ -98,15 +103,18 @@ public class MainActivity extends AppCompatActivity
         switch (itemId){
             case R.id.home:
                 fragment = new MainFragment();
-            break;
+                break;
+            case R.id.creditCards:
+                fragment = new MyCreditCardsFragment();
+                break;
             case R.id.alarms:
                 fragment = new AlarmsFragment();
-            break;
+                break;
             case R.id.buyCredit:
                 fragment = new BuyCreditsFragment();
                 break;
             case R.id.userData:
-                fragment = new UserDataFragment();
+                fragment = new ProfileFragment();
                 break;
             case R.id.myExtract:
                 fragment = new HistoryFragment();
@@ -122,25 +130,6 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
-    }
-
-    private void getUserData(){
-        Call<User> call = new RetrofitConfig().getUserService().getUser("Bearer "+ UserSession.getInstance(getApplicationContext()).getUserToken());
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if(response.isSuccessful()){
-                    user = response.body();
-                    Toast.makeText(getApplicationContext(),"Bem vindo "+user.getName(),Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(getApplicationContext(),response.message(),Toast.LENGTH_LONG).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
 }

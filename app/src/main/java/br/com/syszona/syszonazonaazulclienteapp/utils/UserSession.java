@@ -36,15 +36,19 @@ public class UserSession {
         editor.commit();
     }
 
-    public Boolean getUserKeepConnected(){
-        return sharedPreferences.getBoolean("keepConnected",false);
-    }
-
     public Boolean isUserLoggedIn() {
         if(sharedPreferences.getString("token", "").length() > 0 && sharedPreferences.getBoolean("keepConnected",false)){
             return true;
         }
         return false;
+    }
+
+    public void setAlarm(String id, int minutes){
+        editor.putInt(id,minutes);
+        editor.commit();
+    }
+    public int getAlarm(String id){
+        return sharedPreferences.getInt(id,0);
     }
 
     public void clearSession() {

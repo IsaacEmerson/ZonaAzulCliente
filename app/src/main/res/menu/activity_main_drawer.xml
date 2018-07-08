@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_park"
             android:title="Estacionar" />
         <item
+            android:id="@+id/creditCards"
+            android:icon="@drawable/ic_credit_card"
+            android:title="Meus Cartões" />
+        <item
             android:id="@+id/alarms"
             android:icon="@drawable/ic_alarm"
             android:title="Alarmes" />

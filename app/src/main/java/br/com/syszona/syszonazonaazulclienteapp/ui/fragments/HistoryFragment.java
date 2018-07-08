@@ -1,4 +1,4 @@
-package br.com.syszona.syszonazonaazulclienteapp.ui.activities;
+package br.com.syszona.syszonazonaazulclienteapp.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +14,7 @@ public class HistoryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle save) {
-        return inflater.inflate(R.layout.fragment_hystory,container,false);
+        return inflater.inflate(R.layout.fragment_history,container,false);
     }
 
     @Override

@@ -1,9 +1,9 @@
-package br.com.syszona.syszonazonaazulclienteapp.ui.activities;
+package br.com.syszona.syszonazonaazulclienteapp.ui.fragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +13,13 @@ import android.widget.EditText;
 
 import br.com.syszona.syszonazonaazulclienteapp.R;
 
+
 public class BuyCreditsFragment extends Fragment implements View.OnClickListener{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle save) {
         View view = inflater.inflate(R.layout.fragment_buy_credits,container,false);
+
         Button confirm = view.findViewById(R.id.confirm_buy_credit);
         confirm.setOnClickListener(this);
         return view;

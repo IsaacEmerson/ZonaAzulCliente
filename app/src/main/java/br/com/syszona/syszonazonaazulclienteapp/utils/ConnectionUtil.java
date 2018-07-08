@@ -3,6 +3,13 @@ package br.com.syszona.syszonazonaazulclienteapp.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
+
+import br.com.syszona.syszonazonaazulclienteapp.models.User;
+import br.com.syszona.syszonazonaazulclienteapp.providers.RetrofitConfig;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ConnectionUtil {
 
@@ -14,4 +21,5 @@ public class ConnectionUtil {
         else
             return false;
     }
+
 }

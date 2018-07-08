@@ -14,4 +14,7 @@ public interface UserService {
 
     @GET("me")
     Call<User> getUser(@Header("Authorization") String authHeader);
+
+    @POST("refresh")
+    Call<Token> refreshToken(@Header("Authorization") String authHeader);
 }

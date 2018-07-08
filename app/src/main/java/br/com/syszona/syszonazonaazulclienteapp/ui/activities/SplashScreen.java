@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import br.com.syszona.syszonazonaazulclienteapp.R;
-import br.com.syszona.syszonazonaazulclienteapp.ui.activities.LoginActivity;
 import br.com.syszona.syszonazonaazulclienteapp.utils.UserSession;
 
 public class SplashScreen extends AppCompatActivity implements Runnable {
