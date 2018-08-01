@@ -7,19 +7,20 @@
         <item
             android:id="@+id/home"
             android:icon="@drawable/ic_home"
-            android:title="Inicio" />
-        <item
+            android:title="Inicio"
+            android:checked="true"/>
+        <!--<item
             android:id="@+id/park"
             android:icon="@drawable/ic_park"
-            android:title="Estacionar" />
+            android:title="Estacionar" />!-->
         <item
             android:id="@+id/creditCards"
             android:icon="@drawable/ic_credit_card"
             android:title="Meus Cartões" />
-        <item
+        <!--<item
             android:id="@+id/alarms"
             android:icon="@drawable/ic_alarm"
-            android:title="Alarmes" />
+            android:title="Alarmes" />!-->
         <item
             android:id="@+id/lookForVacancies"
             android:icon="@drawable/ic_vacations"
@@ -31,7 +32,7 @@
         <item
             android:id="@+id/myExtract"
             android:icon="@drawable/ic_extract"
-            android:title="Meu Extrato" />
+            android:title="Meu Histórico" />
     </group>
 
     <item android:title="Minha conta">
@@ -40,10 +41,10 @@
                 android:id="@+id/userData"
                 android:icon="@drawable/ic_user"
                 android:title="Meus Dados" />
-            <item
+            <!--<item
                 android:id="@+id/regularization"
                 android:icon="@drawable/ic_regular"
-                android:title="Regularização" />
+                android:title="Regularização" />!-->
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_logout"

@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import br.com.syszona.syszonazonaazulclienteapp.R;
 import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.AlarmsFragment;
@@ -21,7 +22,10 @@ import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.HistoryFragment;
 import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.MainFragment;
 import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.MyCreditCardsFragment;
 import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.ProfileFragment;
+import br.com.syszona.syszonazonaazulclienteapp.utils.UserSession;
+
 import static br.com.syszona.syszonazonaazulclienteapp.utils.MessageUtil.message;
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -82,7 +86,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            UserSession.getInstance(getApplicationContext()).clearSession();
+            finish();
             return true;
         }
 
@@ -107,9 +113,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.creditCards:
                 fragment = new MyCreditCardsFragment();
                 break;
-            case R.id.alarms:
-                fragment = new AlarmsFragment();
-                break;
             case R.id.buyCredit:
                 fragment = new BuyCreditsFragment();
                 break;
@@ -118,6 +121,13 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.myExtract:
                 fragment = new HistoryFragment();
+                break;
+            case R.id.lookForVacancies:
+                Toast.makeText(this, "Em Breve..", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.logout:
+                UserSession.getInstance(getApplicationContext()).clearSession();
+                finish();
                 break;
 
         }

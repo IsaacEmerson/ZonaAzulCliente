@@ -9,7 +9,13 @@ public class RetrofitConfig {
 
     public RetrofitConfig() {
         this.retrofit = new Retrofit.Builder()
-                .baseUrl("http://zona-azul.herokuapp.com/api/")
+                .baseUrl("http://zona-azul-teste.herokuapp.com/api/client/")
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+    }
+    public RetrofitConfig(int i) {
+        this.retrofit = new Retrofit.Builder()
+                .baseUrl("http://zona-azul-teste.herokuapp.com/api/")
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
     }

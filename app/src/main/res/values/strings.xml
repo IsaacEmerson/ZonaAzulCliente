@@ -16,7 +16,7 @@
     <string name="google_maps_key">AIzaSyCf0UA5guhK4G_wXJRQukEOhEr6s8PlNmg</string>
     <string name="title_activity_maps">Map</string>
 
-    <string-array name="planets_array">
+    <string-array name="cities_array">
         <item>Juazeiro do Norte</item>
         <item>Iguatu</item>
         <item>Mombaça</item>

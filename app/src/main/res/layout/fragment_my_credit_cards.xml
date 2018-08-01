@@ -79,7 +79,7 @@
                 android:text="Adicionar Cartão"
                 />
             <TextView
-                android:layout_gravity="center"
+                android:gravity="center_horizontal"
                 android:textStyle="bold"
                 android:text="Clique sobre o cartão para Editar"
                 android:layout_width="match_parent"

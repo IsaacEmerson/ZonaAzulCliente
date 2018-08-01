@@ -18,7 +18,6 @@ import com.cooltechworks.creditcarddesign.CreditCardUtils;
 import com.cooltechworks.creditcarddesign.CreditCardView;
 
 import br.com.syszona.syszonazonaazulclienteapp.R;
-import br.com.syszona.syszonazonaazulclienteapp.databinding.FragmentProfileBinding;
 import br.com.syszona.syszonazonaazulclienteapp.models.Token;
 import br.com.syszona.syszonazonaazulclienteapp.models.User;
 import br.com.syszona.syszonazonaazulclienteapp.providers.RetrofitConfig;
@@ -65,7 +64,7 @@ public class MyCreditCardsFragment extends Fragment {
     private void populate() {
         CreditCardView sampleCreditCardView = new CreditCardView(getContext());
 
-        String name = "Glarence Zhao";
+        String name = "Syszona ZonaAzul";
         String cvv = "420";
         String expiry = "01/18";
         String cardNumber = "4242424242424242";

@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.pb.setVisibility(View.VISIBLE);
         binding.btnLogin.setEnabled(false);
 
-        Call<Token> call = new RetrofitConfig().getUserService().login(email,password);
+        Call<Token> call = new RetrofitConfig(1).getUserService().login(email,password);
 
         call.enqueue(new Callback<Token>() {
             @Override

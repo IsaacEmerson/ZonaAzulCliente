@@ -1,9 +1,17 @@
 package br.com.syszona.syszonazonaazulclienteapp.models;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonIgnoreProperties({"role"})
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -11,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "name",
         "email",
         "city_id",
+        "street_preference_id",
         "active",
+        "pdv",
         "cell_phone",
         "cpf",
         "created_at",
@@ -27,50 +37,24 @@ public class User implements Serializable
     @JsonProperty("email")
     private String email;
     @JsonProperty("city_id")
-    private Integer cityId;
+    private Object cityId;
+    @JsonProperty("street_preference_id")
+    private Object streetPreferenceId;
     @JsonProperty("active")
     private Boolean active;
+    @JsonProperty("pdv")
+    private Boolean pdv;
     @JsonProperty("cell_phone")
-    private Object cellPhone;
+    private String cellPhone;
     @JsonProperty("cpf")
-    private Object cpf;
+    private String cpf;
     @JsonProperty("created_at")
     private String createdAt;
     @JsonProperty("updated_at")
     private String updatedAt;
-    private final static long serialVersionUID = 8589120119470569956L;
-
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    public User() {
-    }
-
-    /**
-     *
-     * @param updatedAt
-     * @param id
-     * @param cityId
-     * @param email
-     * @param createdAt
-     * @param name
-     * @param cellPhone
-     * @param active
-     * @param cpf
-     */
-    public User(Integer id, String name, String email, Integer cityId, Boolean active, Object cellPhone, Object cpf, String createdAt, String updatedAt) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.cityId = cityId;
-        this.active = active;
-        this.cellPhone = cellPhone;
-        this.cpf = cpf;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private final static long serialVersionUID = 6357433533050009905L;
 
     @JsonProperty("id")
     public Integer getId() {
@@ -103,13 +87,23 @@ public class User implements Serializable
     }
 
     @JsonProperty("city_id")
-    public Integer getCityId() {
+    public Object getCityId() {
         return cityId;
     }
 
     @JsonProperty("city_id")
-    public void setCityId(Integer cityId) {
+    public void setCityId(Object cityId) {
         this.cityId = cityId;
+    }
+
+    @JsonProperty("street_preference_id")
+    public Object getStreetPreferenceId() {
+        return streetPreferenceId;
+    }
+
+    @JsonProperty("street_preference_id")
+    public void setStreetPreferenceId(Object streetPreferenceId) {
+        this.streetPreferenceId = streetPreferenceId;
     }
 
     @JsonProperty("active")
@@ -122,23 +116,33 @@ public class User implements Serializable
         this.active = active;
     }
 
+    @JsonProperty("pdv")
+    public Boolean getPdv() {
+        return pdv;
+    }
+
+    @JsonProperty("pdv")
+    public void setPdv(Boolean pdv) {
+        this.pdv = pdv;
+    }
+
     @JsonProperty("cell_phone")
-    public Object getCellPhone() {
+    public String getCellPhone() {
         return cellPhone;
     }
 
     @JsonProperty("cell_phone")
-    public void setCellPhone(Object cellPhone) {
+    public void setCellPhone(String cellPhone) {
         this.cellPhone = cellPhone;
     }
 
     @JsonProperty("cpf")
-    public Object getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
     @JsonProperty("cpf")
-    public void setCpf(Object cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
@@ -160,6 +164,16 @@ public class User implements Serializable
     @JsonProperty("updated_at")
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
     }
 
 }

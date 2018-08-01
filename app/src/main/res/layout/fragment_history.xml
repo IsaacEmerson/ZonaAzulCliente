@@ -6,28 +6,35 @@
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
-    android:paddingTop="64dp"
-    tools:context=".ui.activities.fragments.HistoryFragment">
+    android:paddingTop="64dp">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
+        <ProgressBar
+            android:id="@+id/pb"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:indeterminate="true"
+            android:theme="@style/LinearProgress"
+            android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
-            android:id="@+id/footer"
+            android:id="@+id/gh"
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
-            android:id="@+id/confirm_buy_credit"
+            android:id="@+id/btn"
             android:textColor="#FFFF"
             android:text="Compras"
             android:layout_weight="2"
@@ -35,68 +42,60 @@
             android:layout_width="match_parent"
             android:layout_height="45dp" />
             <Button
-                android:textColor="#000"
+                android:textColor="#FFFF"
                 android:text="Ativações"
                 android:layout_weight="2"
-                android:background="@drawable/custom_button_white"
+                android:background="@drawable/custom_button"
                 android:layout_width="match_parent"
                 android:layout_height="45dp" />
         </LinearLayout>
     </RelativeLayout>
 
+        <TextView
+            android:gravity="center_horizontal"
+            android:text="Tipo - Valor - Antes - Depois - TotalCads"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvHistoric"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:textSize="17sp"
-            android:drawableRight="@drawable/ic_extract"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12 de Janeiro"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="#fff"
-            android:clickable="true"
-            android:elevation="4dp"
-            android:padding="20dp"
-            android:text="Placa : ABC-1234" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#fff"
-            android:layout_margin="5dp"
-            android:clickable="true"
-            android:elevation="4dp"
-            android:padding="20dp"
-            android:text="Data : 00/00/0000 " />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#fff"
-            android:layout_margin="5dp"
-            android:clickable="true"
-            android:elevation="4dp"
-            android:padding="20dp"
-            android:text="Tipo do Veículo : CARRO " />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="#fff"
-            android:clickable="true"
-            android:elevation="4dp"
-            android:padding="20dp"
-            android:text="Cidade : Juazeiro do Norte" />
     </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/footer"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnPrevious"
+                    android:textColor="#000"
+                    android:text="Anterior"
+                    android:layout_weight="2"
+                    android:background="@drawable/custom_button_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" />
+                <Button
+                    android:id="@+id/btnNext"
+                    android:textColor="#000"
+                    android:text="Proximo"
+                    android:layout_weight="2"
+                    android:background="@drawable/custom_button_white"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
     </LinearLayout>
 </FrameLayout>

@@ -16,7 +16,7 @@ public class AlarmUtil {
         UserSession.getInstance(context).setAlarm(id,minutes);
     }
 
-    public static void setAlarm(Context context){
+    public static void setAlarm(Context context, int rateMinutes){
 
         //boolean alarmeAtivo = (PendingIntent.getBroadcast(context, 0, new Intent("ALARME_DISPARADO"), PendingIntent.FLAG_NO_CREATE) == null);
         //if(alarmeAtivo){
@@ -30,7 +30,7 @@ public class AlarmUtil {
             PendingIntent p = PendingIntent.getBroadcast(context, i, intent, PendingIntent.FLAG_ONE_SHOT);
             Calendar c = Calendar.getInstance();
             c.setTimeInMillis(System.currentTimeMillis());
-            c.add(Calendar.MINUTE,  minutes);
+            c.add(Calendar.MINUTE,  rateMinutes-minutes);
             AlarmManager alarme = (AlarmManager) context.getSystemService(ALARM_SERVICE);
             alarme.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), p);
         }

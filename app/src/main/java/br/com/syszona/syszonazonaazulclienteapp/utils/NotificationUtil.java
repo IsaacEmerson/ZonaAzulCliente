@@ -11,18 +11,21 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import br.com.syszona.syszonazonaazulclienteapp.R;
+import br.com.syszona.syszonazonaazulclienteapp.ui.activities.LoginActivity;
 import br.com.syszona.syszonazonaazulclienteapp.ui.activities.MainActivity;
+import br.com.syszona.syszonazonaazulclienteapp.ui.activities.SplashScreen;
+
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class NotificationUtil{
 
     public static void NotifyUserTime(Context context,int min){
         NotificationManager nm = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        PendingIntent p = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
+        PendingIntent p = PendingIntent.getActivity(context, 0, new Intent(context, SplashScreen.class), 0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setTicker("Alerta Estacionamento");
         builder.setContentTitle("Alerta de tempo estacionamento");
-        builder.setContentText("Passaram "+min+" minutos..");
+        builder.setContentText("Faltam "+min+" minutos..");
         builder.setAutoCancel(true);
         builder.setSmallIcon(R.drawable.ic_user);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_park));
@@ -42,7 +45,6 @@ public class NotificationUtil{
         try{
             Uri som = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
             Ringtone toque = RingtoneManager.getRingtone(context, som);
-
             toque.play();
         }
         catch(Exception e){}

@@ -4,6 +4,9 @@
         <variable
             name="userData"
             type="br.com.syszona.syszonazonaazulclienteapp.models.User"/>
+        <variable
+            name="balance"
+            type="br.com.syszona.syszonazonaazulclienteapp.models.Balance"/>
     </data>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,7 +32,6 @@
             android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#fcfcfc"
             android:orientation="vertical"
             android:padding="5dp">
 
@@ -70,13 +72,12 @@
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/userCards"
-                        android:drawableLeft="@drawable/ic_credit_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:text="Cartões : 0"
+                        android:text="@{userData.cpf}"
                         android:gravity="center_vertical"
-                        android:textSize="20sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -96,7 +97,8 @@
                     android:text="Cidade Atual : "
                     android:textSize="20sp"
                     android:textStyle="bold" />
-                <TextView
+                <!--<TextView
+                    android:id="@+id/city_name"
                     android:gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,12 +107,14 @@
                     android:textSize="18sp"
                     android:paddingBottom="3dp"
                     android:textStyle="bold" />
+                    !-->
 
-                <!--<Spinner
-                    android:id="@+id/spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                </Spinner>!-->
+                <Spinner
+                    android:spinnerMode="dialog"
+                    android:id="@+id/spinner_cities"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </Spinner>
             </LinearLayout>
 
             <LinearLayout
@@ -121,6 +125,7 @@
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/cv_balance"
                     android:layout_width="100dp"
                     android:layout_height="74dp"
                     android:layout_margin="3dp"
@@ -147,12 +152,26 @@
                             android:layout_marginTop="-15dp"
                             android:src="@mipmap/ticket" />
 
-                        <TextView
+                        <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="Saldo R$ 0,00"
-                            android:textStyle="bold" />
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="Saldo : "
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="@{balance.amount.toString()}"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                         <View
                             android:layout_width="match_parent"
@@ -163,6 +182,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/cv_cads"
                     android:layout_width="100dp"
                     android:layout_height="74dp"
                     android:layout_margin="3dp"
@@ -187,14 +207,28 @@
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:layout_marginTop="-15dp"
-                            android:src="@drawable/ic_alarm" />
+                            android:src="@drawable/ic_credit_card" />
 
-                        <TextView
+                        <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:text="2 HRS"
-                            android:textStyle="bold" />
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="Cads : "
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/cads_cont"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:text="0"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
 
                         <View
                             android:layout_width="match_parent"
@@ -206,6 +240,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/cv_alerts"
                     android:layout_width="100dp"
                     android:layout_height="74dp"
                     android:layout_margin="3dp"
@@ -260,6 +295,15 @@
                 android:text="Meus Veículos"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="3dp"
+                android:textColor="#1ba67e"
+                android:text="(Clique e segure para deletar)"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <HorizontalScrollView
                 android:id="@+id/hsv"
@@ -267,156 +311,25 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:fillViewport="true"
+                android:padding="2dp"
                 android:measureAllChildren="false"
                 android:scrollbars="none">
 
                 <LinearLayout
+                    android:id="@+id/vehiclesList"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="74dp"
                     android:clipToPadding="false"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <android.support.v7.widget.CardView
+                        android:id="@+id/add_plaque"
                         android:layout_width="80dp"
-                        android:layout_height="74dp"
-                        android:layout_margin="3dp"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                        <LinearLayout
-                            android:background="#c1e7fe"
-                            android:layout_width="80dp"
-                            android:layout_height="74dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/car" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Placa"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Descrição"
-                                android:textSize="9sp" />
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView
-                        android:layout_width="80dp"
-                        android:layout_height="74dp"
-                        android:layout_margin="3dp"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                        <LinearLayout
-                            android:layout_width="80dp"
-                            android:layout_height="74dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/moto" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Placa"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Descrição"
-                                android:textSize="9sp" />
-
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <android.support.v7.widget.CardView
-                        android:layout_width="80dp"
-                        android:layout_height="74dp"
-                        android:layout_margin="3dp"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                        <LinearLayout
-                            android:layout_width="80dp"
-                            android:layout_height="74dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/truck" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Placa"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Descrição"
-                                android:textSize="9sp" />
-
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-
-                    <!--<android.support.v7.widget.CardView
-                        android:layout_width="80dp"
-                        android:layout_height="74dp"
-                        android:layout_margin="3dp"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground">
-
-                        <LinearLayout
-                            android:layout_width="80dp"
-                            android:layout_height="74dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_marginTop="5dp"
-                                android:src="@mipmap/bus" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Placa"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Descrição"
-                                android:textSize="9sp" />
-                        </LinearLayout>
-                    </android.support.v7.widget.CardView>
-                    !-->
-
-                    <android.support.v7.widget.CardView
-                        android:layout_width="80dp"
-                        android:layout_height="74dp"
-                        android:layout_margin="3dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3px"
+                        app:cardElevation="9px"
+                        app:cardMaxElevation="15px"
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground">
 
@@ -445,15 +358,29 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_marginTop="15dp"
-                android:textColor="#3234be"
-                android:text="Tarifas do tipo: CARRO"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#3234be"
+                    android:text="Tarifas do tipo: "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/rateType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#3234be"
+                    android:text=""
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
             <HorizontalScrollView
                 android:layout_width="fill_parent"
@@ -464,10 +391,11 @@
                 android:scrollbars="none">
 
                 <LinearLayout
+                    android:id="@+id/ratesList"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:gravity="center"
+                    android:layout_height="74dp"
                     android:orientation="horizontal">
 
                     <!--<android.support.v7.widget.CardView
@@ -538,7 +466,7 @@
                     </android.support.v7.widget.CardView>
                     !-->
 
-                    <android.support.v7.widget.CardView
+                    <!--<android.support.v7.widget.CardView
                         android:layout_width="80dp"
                         android:layout_height="74dp"
                         android:layout_margin="3dp"
@@ -555,7 +483,7 @@
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
                                 android:layout_marginTop="5dp"
-                                android:src="@mipmap/taxa3" />
+                                android:src="@mipmap/rate3" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -571,6 +499,7 @@
 
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
+                    !-->
 
                     <!--<android.support.v7.widget.CardView
                         android:layout_width="80dp"
@@ -621,6 +550,7 @@
                 android:textStyle="bold" />
 
             <HorizontalScrollView
+                android:layout_marginBottom="5dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -758,22 +688,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <Button
-                android:textColor="#FFFF"
-                android:text="Ver Locais"
-                android:drawableStart="@mipmap/map"
-                android:layout_weight="2"
-                android:paddingLeft="10dp"
-                android:background="@drawable/custom_button"
-                android:layout_width="match_parent"
-                android:layout_height="45dp" />
-            <Button
                 android:id="@+id/btn_confirm_park"
                 android:textColor="#FFFF"
                 android:text="Estacionar"
                 android:layout_weight="2"
                 android:background="@drawable/custom_button"
                 android:layout_width="match_parent"
-                android:layout_height="45dp" />
+                android:layout_height="47dp" />
         </LinearLayout>
 
     </RelativeLayout>
