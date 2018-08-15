@@ -52,7 +52,7 @@ public interface UserService {
 
     @POST("activeCard")
     Call<ActiveCard> activeCard(@Header("Authorization") String authHeader, @Query("city_id") int city_id
-    , @Query("rate_id") int rate_id, @Query("address_id") int address_id, @Query("plaque_id") int plaque_id);
+    , @Query("rate_id") int rate_id, @Query("plaque_id") int plaque_id);
 
     @POST("plaques")
     Call<ActiveCard> addPlaque(@Header("Authorization") String authHeader, @Query("plaque") String plaque, @Query("vehicle_id") int vehicle_id);

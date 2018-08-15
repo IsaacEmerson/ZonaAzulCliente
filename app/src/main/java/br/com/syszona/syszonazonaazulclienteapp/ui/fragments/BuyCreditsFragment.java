@@ -11,7 +11,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,23 +21,31 @@ import android.widget.TextView;
 import br.com.syszona.syszonazonaazulclienteapp.R;
 import br.com.syszona.syszonazonaazulclienteapp.databinding.FragmentBuyCreditsBinding;
 import br.com.syszona.syszonazonaazulclienteapp.models.CreditCard;
+import br.com.syszona.syszonazonaazulclienteapp.models.Token;
 import cn.carbs.android.library.MDDialog;
 
 
-public class BuyCreditsFragment extends Fragment implements View.OnClickListener{
-
-    FragmentBuyCreditsBinding binding;
+public class BuyCreditsFragment extends Fragment{
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle save) {
-        View view = inflater.inflate(R.layout.fragment_buy_credits,container,false);
-        //binding.confirmBuyCredit.setOnClickListener(this);
+        View view = inflater.inflate(R.layout.buy_webview,container,false);
 
-        showBuyDialog();
+        WebView myWebView = (WebView) view.findViewById(R.id.webview);
+        myWebView.loadUrl("http://zona-azul-teste.herokuapp.com/credits");
 
-        Button confirm = view.findViewById(R.id.confirm_buy_credit);
-        confirm.setOnClickListener(this);
+        WebSettings webSettings = myWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setSupportZoom(false);
+
+        myWebView.setWebViewClient(new WebViewClient());
+
+        //Token teste = new Token();
+        //teste.setToken("kakakakkaka");
+
+        //myWebView.addJavascriptInterface(teste,"Android");
+
         return view;
     }
 
@@ -43,11 +53,6 @@ public class BuyCreditsFragment extends Fragment implements View.OnClickListener
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Comprar Créditos");
-    }
-
-    @Override
-    public void onClick(View v) {
-        showBuyDialog();
     }
 
 

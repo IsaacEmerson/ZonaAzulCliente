@@ -56,6 +56,7 @@ import br.com.syszona.syszonazonaazulclienteapp.models.User;
 import br.com.syszona.syszonazonaazulclienteapp.providers.RetrofitConfig;
 import br.com.syszona.syszonazonaazulclienteapp.ui.activities.LoginActivity;
 import br.com.syszona.syszonazonaazulclienteapp.ui.activities.MainActivity;
+import br.com.syszona.syszonazonaazulclienteapp.ui.activities.NoInternetActivity;
 import br.com.syszona.syszonazonaazulclienteapp.ui.adapters.CitiesAdapter;
 import br.com.syszona.syszonazonaazulclienteapp.utils.AlarmUtil;
 import br.com.syszona.syszonazonaazulclienteapp.utils.ConnectionUtil;
@@ -105,12 +106,18 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
            getCities();
        }else{
            MessageUtil.message("Você não esta conectado à Internet",getContext(),1,null);
+           startActivity(new Intent(getContext(), NoInternetActivity.class));
        }
 
        binding.btnConfirmPark.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-                getAddresses(parkCityId);
+                //getAddresses(parkCityId);
+               if(parkPlaqueId!=0 && parkRateId!=0 && parkCityId!=0){
+                   activeCard(parkCityId,parkRateId,parkAddressId,parkPlaqueId);
+               }else{
+                   message("Selecione veiculo, taxa e local de estacionamento.",getContext(),2,null);
+               }
            }
        });
 
@@ -121,6 +128,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
            }
        });
 
+       /*
        binding.alarm01.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -143,6 +151,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
        binding.showAlarm01.setText(String.valueOf(UserSession.getInstance(getContext()).getAlarm("1"))+" min");
        binding.showAlarm02.setText(String.valueOf(UserSession.getInstance(getContext()).getAlarm("2"))+" min");
        binding.showAlarm03.setText(String.valueOf(UserSession.getInstance(getContext()).getAlarm("3"))+" min");
+       */
 
        //---------------------------------------------------------------------
 
@@ -526,7 +535,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
             public void onResponse(Call<AddressesList> call, Response<AddressesList> response) {
                 if(response.code()>=200 && response.code()<300){
                     //citiesList = response.body();
-                    showAdderessesDialog(response.body());
+                    //showAdderessesDialog(response.body());
                     binding.pb.setVisibility(View.GONE);
                 }else if(response.code()==401 && response.message().equals("Unauthorized")){
                     responseError(response.errorBody());
@@ -589,7 +598,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
     private void activeCard(int parkCityId, final int parkRateId, int parkAddressId, int parkPlaqueId){
         binding.pb.setVisibility(View.VISIBLE);
         Call<ActiveCard> call = new RetrofitConfig().getUserService().activeCard("Bearer "+ UserSession.getInstance(getContext()).getUserToken(),
-                parkCityId, parkRateId, parkAddressId, parkPlaqueId);
+                parkCityId, parkRateId, parkPlaqueId);
         call.enqueue(new Callback<ActiveCard>() {
             @Override
             public void onResponse(Call<ActiveCard> call, Response<ActiveCard> response) {
@@ -811,6 +820,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
                 .show();
     }
 
+    /*
     private void showAlarmDialog(final String id){
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = this.getLayoutInflater();
@@ -857,6 +867,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
 
         b.show();
     }
+    */
 
     private void showCadsDialog(){
         final ListView list = new ListView(getContext());
