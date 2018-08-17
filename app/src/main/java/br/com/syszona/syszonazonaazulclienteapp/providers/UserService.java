@@ -8,6 +8,7 @@ import br.com.syszona.syszonazonaazulclienteapp.models.CitiesList;
 import br.com.syszona.syszonazonaazulclienteapp.models.HistoricList;
 import br.com.syszona.syszonazonaazulclienteapp.models.PlaquesList;
 import br.com.syszona.syszonazonaazulclienteapp.models.RateList;
+import br.com.syszona.syszonazonaazulclienteapp.models.Success;
 import br.com.syszona.syszonazonaazulclienteapp.models.Token;
 import br.com.syszona.syszonazonaazulclienteapp.models.User;
 import br.com.syszona.syszonazonaazulclienteapp.models.UserData;
@@ -56,6 +57,9 @@ public interface UserService {
 
     @POST("plaques")
     Call<ActiveCard> addPlaque(@Header("Authorization") String authHeader, @Query("plaque") String plaque, @Query("vehicle_id") int vehicle_id);
+
+    @POST("register")
+    Call<Success> registerClient(@Query("name") String name, @Query("email") String email, @Query("password") String password, @Query("password_confirmation") String password_confirmation);
 
     @DELETE("plaques")
     Call<ActiveCard> deletePlaque(@Header("Authorization") String authHeader,@Query("id") int id);

@@ -11,7 +11,8 @@ import android.util.Log;
 import android.view.View;
 
 import br.com.syszona.syszonazonaazulclienteapp.R;
-import br.com.syszona.syszonazonaazulclienteapp.databinding.ActivityLoginBinding;
+import br.com.syszona.syszonazonaazulclienteapp.databinding.ActivitySignUpBinding;
+import br.com.syszona.syszonazonaazulclienteapp.models.Success;
 import br.com.syszona.syszonazonaazulclienteapp.models.Token;
 import br.com.syszona.syszonazonaazulclienteapp.providers.RetrofitConfig;
 import br.com.syszona.syszonazonaazulclienteapp.utils.UserSession;
@@ -22,19 +23,21 @@ import retrofit2.Response;
 import static br.com.syszona.syszonazonaazulclienteapp.utils.ConnectionUtil.isOnline;
 import static br.com.syszona.syszonazonaazulclienteapp.utils.MessageUtil.message;
 
-public class LoginActivity extends AppCompatActivity {
+
+public class SignUpActivity extends AppCompatActivity {
+
+    ActivitySignUpBinding binding;
     boolean doubleBackToExitPressedOnce = false;
-    ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
 
-        binding.fogotPass.setOnClickListener(new View.OnClickListener() {
+        binding.moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "http://syszona.com.br/password/";
+                String url = "http://syszona.com.br";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
@@ -44,69 +47,73 @@ public class LoginActivity extends AppCompatActivity {
         binding.footer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+                finish();
             }
         });
 
-        binding.btnLogin.setOnClickListener(new View.OnClickListener() {
+        binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = binding.userEmail.getText().toString().trim();
                 String pass = binding.password.getText().toString().trim();
-                if(isValidEmailAndPass(email,pass)){
+                String cPass = binding.confirmPassword.getText().toString().trim();
+                String name = binding.userName.getText().toString().trim();
+                if(isValidEmailAndPass(name,email,pass)){
                     if(isOnline(getApplicationContext())){
-                        login(email,pass);
+                        if(pass.equals(cPass)){
+                            register(name,email,pass);    
+                        }else{
+                            message("As senhas não correspondem..",getApplicationContext(),1,null);
+                        }
                     }else{
                         message("Seu Dispositivo não esta conectado à Internet..",getApplicationContext(),1,null);
                     }
                 }
             }
         });
+
+
     }
 
-    private void login(String email, String password) {
+    private void register(String name, String email, String pass) {
         // Visible the progress bar
         binding.pb.setVisibility(View.VISIBLE);
-        binding.btnLogin.setEnabled(false);
+        binding.btnRegister.setEnabled(false);
 
-        Call<Token> call = new RetrofitConfig(1).getUserService().login(email,password);
+        Call<Success> call = new RetrofitConfig(1).getUserService().registerClient(name,email,pass,pass);
 
-        call.enqueue(new Callback<Token>() {
+        call.enqueue(new Callback<Success>() {
             @Override
-            public void onResponse(Call<Token> call, Response<Token> response) {
+            public void onResponse(Call<Success> call, Response<Success> response) {
 
                 if(response.code()>=200 && response.code()<300){
-
-                    Token jwt = response.body();
-
-                    UserSession userSession = UserSession.getInstance(getApplicationContext());
-                    userSession.setUserToken(jwt.getToken());
-                    userSession.setUserKeepConnected(binding.keepConected.isChecked());
-
-                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                    finish();
-
-                }else if(response.code()==401){
-                    message("Usuário ou senha incorretos..",getApplicationContext(),1,null);
+                    message(response.body().getMessage(),getApplicationContext(),1,null);
+                }else if(response.code()>=400 && response.code()<500){
+                    message("Erro ao cadastrar tente novamente",getApplicationContext(),1,null);
                 }else{
-                    Log.e("UserService",response.message());
+                    Log.e("register",response.message());
                 }
 
                 binding.pb.setVisibility(View.GONE);
-                binding.btnLogin.setEnabled(true);
+                binding.btnRegister.setEnabled(true);
             }
 
             @Override
-            public void onFailure(Call<Token> call, Throwable t) {
+            public void onFailure(Call<Success> call, Throwable t) {
                 message(t.getMessage(),getApplicationContext(),1,null);
                 binding.pb.setVisibility(View.GONE);
-                binding.btnLogin.setEnabled(true);
+                binding.btnRegister.setEnabled(true);
             }
         });
     }
 
-    private boolean isValidEmailAndPass(String email,String password) {
-        if(TextUtils.isEmpty(email)){
+
+    private boolean isValidEmailAndPass(String name,String email,String password) {
+        if(TextUtils.isEmpty(name)) {
+            binding.userName.setError("Preencha o nome");
+            return false;
+        }else if(TextUtils.isEmpty(email)){
             binding.userEmail.setError("Preencha o email");
             return false;
         }else if(TextUtils.isEmpty(password)){
@@ -134,4 +141,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         }, 2000);
     }
+
 }

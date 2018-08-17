@@ -304,7 +304,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
                 TextView tv_rate = new TextView(getContext());
                 tv_rate.setTypeface(null, Typeface.BOLD);
                 tv_rate.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                tv_rate.setText(rate.getRate());
+                tv_rate.setText(rate.getRate()+" R$");
                 tv_rate.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
                 //tv.setTextColor(Color.RED);
                 TextView tv_rate_time = new TextView(getContext());
@@ -889,7 +889,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
                 .setPositiveButton("Mais Informações", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        MessageUtil.message("Em breve",getContext(),1,null);
                     }
                 }).create()
                 .show();
@@ -908,7 +908,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
                 .setPositiveButton("Mais Informações", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        MessageUtil.message("Em breve",getContext(),1,null);
                     }
                 }).create()
                 .show();
@@ -927,7 +927,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
                 .setPositiveButton("Mais Informações", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        MessageUtil.message("Em breve",getContext(),1,null);
                     }
                 }).create()
                 .show();

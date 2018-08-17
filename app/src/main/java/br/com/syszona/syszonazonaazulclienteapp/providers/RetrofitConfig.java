@@ -7,15 +7,19 @@ public class RetrofitConfig {
 
     private final Retrofit retrofit;
 
+    //private final String endpoint = "http://syszona.com.br/api/";
+    private final String endpoint = "http://192.168.1.15/estacionamento-zona-azul/public/api/";
+    //private final String endpoint = "http://zona-azul-teste.herokuapp.com/api/";
+
     public RetrofitConfig() {
         this.retrofit = new Retrofit.Builder()
-                .baseUrl("http://zona-azul-teste.herokuapp.com/api/client/")
+                .baseUrl(endpoint+"client/")
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
     }
     public RetrofitConfig(int i) {
         this.retrofit = new Retrofit.Builder()
-                .baseUrl("http://zona-azul-teste.herokuapp.com/api/")
+                .baseUrl(endpoint)
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build();
     }

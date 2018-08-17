@@ -177,7 +177,7 @@ public class Card implements Serializable
 
     @Override
     public String toString() {
-        return String.valueOf(getId())+"- Horas: " + String.valueOf(getMinutes()/60) + " Preço: " + getAmount() ;
+        return String.valueOf(getId())+"- Tempo: " + String.valueOf(getMinutes()/60) + "Hrs  Preço: " + getAmount()+" R$" ;
     }
 
 }
