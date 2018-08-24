@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -40,6 +41,8 @@ import java.util.List;
 import br.com.syszona.syszonazonaazulclienteapp.R;
 import br.com.syszona.syszonazonaazulclienteapp.databinding.FragmentMainBinding;
 import br.com.syszona.syszonazonaazulclienteapp.models.ActiveCard;
+import br.com.syszona.syszonazonaazulclienteapp.models.ActivePlaque;
+import br.com.syszona.syszonazonaazulclienteapp.models.ActivePlaques;
 import br.com.syszona.syszonazonaazulclienteapp.models.Address;
 import br.com.syszona.syszonazonaazulclienteapp.models.AddressesList;
 import br.com.syszona.syszonazonaazulclienteapp.models.Balance;
@@ -51,6 +54,7 @@ import br.com.syszona.syszonazonaazulclienteapp.models.Plaque;
 import br.com.syszona.syszonazonaazulclienteapp.models.PlaquesList;
 import br.com.syszona.syszonazonaazulclienteapp.models.Rate;
 import br.com.syszona.syszonazonaazulclienteapp.models.RateList;
+import br.com.syszona.syszonazonaazulclienteapp.models.Success;
 import br.com.syszona.syszonazonaazulclienteapp.models.Token;
 import br.com.syszona.syszonazonaazulclienteapp.models.User;
 import br.com.syszona.syszonazonaazulclienteapp.providers.RetrofitConfig;
@@ -58,6 +62,7 @@ import br.com.syszona.syszonazonaazulclienteapp.ui.activities.LoginActivity;
 import br.com.syszona.syszonazonaazulclienteapp.ui.activities.MainActivity;
 import br.com.syszona.syszonazonaazulclienteapp.ui.activities.NoInternetActivity;
 import br.com.syszona.syszonazonaazulclienteapp.ui.adapters.CitiesAdapter;
+import br.com.syszona.syszonazonaazulclienteapp.ui.adapters.RateAdapter;
 import br.com.syszona.syszonazonaazulclienteapp.utils.AlarmUtil;
 import br.com.syszona.syszonazonaazulclienteapp.utils.ConnectionUtil;
 import br.com.syszona.syszonazonaazulclienteapp.utils.MaskEditUtil;
@@ -69,25 +74,28 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static br.com.syszona.syszonazonaazulclienteapp.ui.activities.FinalRegisterActivity.isNumeric;
 import static br.com.syszona.syszonazonaazulclienteapp.utils.MessageUtil.message;
 import android.widget.LinearLayout.LayoutParams;
 
 
 public class MainFragment extends Fragment implements AdapterView.OnItemSelectedListener{
 
-    User user;
+    static User user;
     Balance balance;
     CardList cards;
     PlaquesList plaquesList;
     RateList rateList;
     CitiesList citiesList;
     Rate parkRate;
+    ActivePlaques activePlaques;
     int cardAntVehi = 0;
     int cardAntRate = 0;
     int parkRateId = 0;
-    int parkCityId = 2;
+    static int parkCityId = 1;
     int parkAddressId = 0;
     int parkPlaqueId = 0;
+    int idChangeRate = 1;
     FragmentMainBinding binding;
 
    @Nullable
@@ -104,6 +112,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
            getPlaques();
            getRates(2);
            getCities();
+           getActivePlaques();
        }else{
            MessageUtil.message("Você não esta conectado à Internet",getContext(),1,null);
            startActivity(new Intent(getContext(), NoInternetActivity.class));
@@ -116,7 +125,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
                if(parkPlaqueId!=0 && parkRateId!=0 && parkCityId!=0){
                    activeCard(parkCityId,parkRateId,parkAddressId,parkPlaqueId);
                }else{
-                   message("Selecione veiculo, taxa e local de estacionamento.",getContext(),2,null);
+                   message("Selecione veiculo e taxa.",getContext(),2,null);
                }
            }
        });
@@ -171,6 +180,20 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
            @Override
            public void onClick(View v) {
                showCadsDialog();
+           }
+       });
+
+       binding.activePlaques.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               showActivePlaquesDialog();
+           }
+       });
+
+       binding.changeCads.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               showChangeCardsDialog();
            }
        });
 
@@ -370,6 +393,33 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
                 Log.i("getUser",t.getMessage());
                 Toast.makeText(getContext(),t.toString(),Toast.LENGTH_LONG).show();
                 getUser();
+            }
+        });
+    }
+
+    private void getActivePlaques(){
+        binding.pb.setVisibility(View.VISIBLE);
+        Call<ActivePlaques> call = new RetrofitConfig().getUserService().getactivePlaques("Bearer "+ UserSession.getInstance(getContext()).getUserToken());
+        call.enqueue(new Callback<ActivePlaques>() {
+            @Override
+            public void onResponse(Call<ActivePlaques> call, Response<ActivePlaques> response) {
+                if(response.code()>=200 && response.code()<300){
+                    activePlaques = response.body();
+                    binding.pb.setVisibility(View.GONE);
+                }else if(response.code()==401 && response.message().equals("Unauthorized")){
+                    responseError(response.errorBody());
+                    getActivePlaques();
+                }else{
+                    Log.i("getActivePlaques",response.message());
+                    Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                    getActivePlaques();
+                }
+            }
+            @Override
+            public void onFailure(Call<ActivePlaques> call, Throwable t) {
+                Log.i("getActivePlaques",t.getMessage());
+                Toast.makeText(getContext(),t.toString(),Toast.LENGTH_LONG).show();
+                getActivePlaques();
             }
         });
     }
@@ -597,15 +647,17 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
 
     private void activeCard(int parkCityId, final int parkRateId, int parkAddressId, int parkPlaqueId){
         binding.pb.setVisibility(View.VISIBLE);
-        Call<ActiveCard> call = new RetrofitConfig().getUserService().activeCard("Bearer "+ UserSession.getInstance(getContext()).getUserToken(),
+        Call<Success> call = new RetrofitConfig().getUserService().activeCard("Bearer "+ UserSession.getInstance(getContext()).getUserToken(),
                 parkCityId, parkRateId, parkPlaqueId);
-        call.enqueue(new Callback<ActiveCard>() {
+        call.enqueue(new Callback<Success>() {
             @Override
-            public void onResponse(Call<ActiveCard> call, Response<ActiveCard> response) {
+            public void onResponse(Call<Success> call, Response<Success> response) {
                 if(response.code()>=200 && response.code()<300){
 
-                    ActiveCard activeCard = response.body();
+                    Success activeCard = response.body();
                     Toast.makeText(getContext(),activeCard.getMessage(),Toast.LENGTH_LONG).show();
+
+                    getActivePlaques();
 
                     if(!activeCard.getMessage().contains("Não foi possível")){
                         AlarmUtil.setAlarm(getContext(),parkRate.getMinutes());
@@ -622,7 +674,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
                 }
             }
             @Override
-            public void onFailure(Call<ActiveCard> call, Throwable t) {
+            public void onFailure(Call<Success> call, Throwable t) {
                 Log.i("activeCard",t.getMessage());
                 Toast.makeText(getContext(),t.getMessage(),Toast.LENGTH_LONG).show();
             }
@@ -630,13 +682,13 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
     }
 
     private void addVehicle(int vehicleId, String plaque){
-        Call<ActiveCard> call = new RetrofitConfig().getUserService().addPlaque("Bearer "+UserSession.getInstance(getContext()).getUserToken(),plaque,vehicleId);
-        call.enqueue(new Callback<ActiveCard>() {
+        Call<Success> call = new RetrofitConfig().getUserService().addPlaque("Bearer "+UserSession.getInstance(getContext()).getUserToken(),plaque,vehicleId);
+        call.enqueue(new Callback<Success>() {
             @Override
-            public void onResponse(Call<ActiveCard> call, Response<ActiveCard> response) {
+            public void onResponse(Call<Success> call, Response<Success> response) {
 
                 if(response.code()>=200 && response.code()<300){
-                    ActiveCard addVehicle = response.body(); // são posts e são iguais message e success
+                    Success addVehicle = response.body(); // são posts e são iguais message e success
                     message(addVehicle.getMessage(),getContext(),1,null);
                     binding.vehiclesList.removeViews(1, plaquesList.getTotalPlaques());
                     getPlaques();
@@ -648,7 +700,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
             }
 
             @Override
-            public void onFailure(Call<ActiveCard> call, Throwable t) {
+            public void onFailure(Call<Success> call, Throwable t) {
                 message(t.getMessage(),getContext(),1,null);
             }
         });
@@ -744,10 +796,12 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
                     @Override
                     public void onClick(View v) {
                         String placa = edtPlaca.getText().toString();
-                        if(placa.length()==8 && vehicle[0]!=0){
+                        if(placa.length()==8 && vehicle[0]!=0 && validPlaque(placa)){
                             //Toast.makeText(getContext(), String.valueOf(vehicle[0])+" "+placa, Toast.LENGTH_SHORT).show();
                             addVehicle(vehicle[0],placa);
                         }else{
+                            addNewPlaqueDialog();
+                            edtPlaca.setError("Digite a placa");
                             Toast.makeText(getContext(), "Digite a placa e selecione o veículo", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -820,6 +874,118 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
                 .show();
     }
 
+    private void showActivePlaquesDialog() {
+        final ListView list = new ListView(getContext());
+        list.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
+        ArrayAdapter<ActivePlaque> adapter = new ArrayAdapter<ActivePlaque>(getContext(),
+                android.R.layout.simple_list_item_1, activePlaques.getActivePlaques());
+
+        list.setAdapter(adapter);
+
+        new MDDialog.Builder(getContext())
+                .setTitle("Placas Ativas")
+                .setContentView(list)
+                .setNegativeButton("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .setPositiveButton("Fechar", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).create()
+                .show();
+    }
+
+    private void showChangeCardsDialog(){
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.dialog_change_cards, null);
+        final Spinner ratesSpinner = dialogView.findViewById(R.id.ratesSpinner);
+        final EditText edtQuant = dialogView.findViewById(R.id.edtQuant);
+        ratesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               idChangeRate = rateList.getRates().get(position).getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        RateAdapter rateAdapter = new RateAdapter(getContext(),rateList);
+        ratesSpinner.setAdapter(rateAdapter);
+
+        new MDDialog.Builder(getContext())
+                .setTitle("Crédito por CADS")
+                .setContentView(dialogView)
+                .setNegativeButton("Cancelar", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                })
+                .setPositiveButton("Trocar", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(TextUtils.isEmpty(edtQuant.getText().toString())){
+                            Toast.makeText(getContext(),"Não deixe campos vazios",Toast.LENGTH_LONG).show();
+                            showChangeCardsDialog();
+                        }else if(Integer.parseInt(edtQuant.getText().toString())>10){
+                            Toast.makeText(getContext(),"Maximo de 10 CADS por troca",Toast.LENGTH_LONG).show();
+                            showChangeCardsDialog();
+                        }else if(Integer.parseInt(edtQuant.getText().toString())%2==0){
+                            postBuyCards(Integer.parseInt(edtQuant.getText().toString()),idChangeRate);
+                        }else{
+                            Toast.makeText(getContext(),"Apenas quantidades pares são permitidas",Toast.LENGTH_LONG).show();
+                            showChangeCardsDialog();
+                        }
+                    }
+                }).create()
+                .show();
+    }
+
+    private void postBuyCards(int quant, int rateId) {
+        binding.pb.setVisibility(View.VISIBLE);
+        Call<Success> call = new RetrofitConfig().getUserService().buyCards("Bearer "+UserSession.getInstance(getContext()).getUserToken(),quant,parkCityId,rateId);
+        call.enqueue(new Callback<Success>() {
+            @Override
+            public void onResponse(Call<Success> call, Response<Success> response) {
+                if(response.code()>=200 && response.code()<300){
+                    Toast.makeText(getContext(),response.body().getMessage(),Toast.LENGTH_LONG).show();
+                    binding.pb.setVisibility(View.GONE);
+                    getCards();
+                    getBalance();
+                }else if(response.code()==401 && response.message().equals("Unauthorized")){
+                    responseError(response.errorBody());
+                }else{
+                    Log.i("buyCards",response.message());
+                    Toast.makeText(getContext(),response.message(),Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Success> call, Throwable t) {
+                Log.i("buyCards",t.getMessage());
+                Toast.makeText(getContext(),t.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private boolean validPlaque(String plaque) {
+        String[] pla = plaque.split("-");
+        if(isNumeric(pla[0])){
+            return false;
+        }
+        if(!isNumeric(pla[1])){
+            return false;
+        }
+        return true;
+    }
+
     /*
     private void showAlarmDialog(final String id){
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
@@ -871,7 +1037,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemSelected
 
     private void showCadsDialog(){
         final ListView list = new ListView(getContext());
-        list.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT));
+        list.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,600));
         ArrayAdapter<Card> adapter = new ArrayAdapter<Card>(getContext(),
                 android.R.layout.simple_list_item_1, cards.getCards());
 

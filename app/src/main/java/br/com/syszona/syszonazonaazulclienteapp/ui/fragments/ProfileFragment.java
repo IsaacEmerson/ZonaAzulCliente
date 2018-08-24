@@ -1,5 +1,6 @@
 package br.com.syszona.syszonazonaazulclienteapp.ui.fragments;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import br.com.syszona.syszonazonaazulclienteapp.databinding.FragmentProfileBindi
 import br.com.syszona.syszonazonaazulclienteapp.models.Token;
 import br.com.syszona.syszonazonaazulclienteapp.models.User;
 import br.com.syszona.syszonazonaazulclienteapp.providers.RetrofitConfig;
+import br.com.syszona.syszonazonaazulclienteapp.ui.activities.NoInternetActivity;
 import br.com.syszona.syszonazonaazulclienteapp.utils.ConnectionUtil;
 import br.com.syszona.syszonazonaazulclienteapp.utils.MessageUtil;
 import br.com.syszona.syszonazonaazulclienteapp.utils.UserSession;
@@ -38,6 +40,7 @@ public class ProfileFragment extends Fragment {
             getUserData();
         }else{
             MessageUtil.message("Você não esta conectado à Internet",getContext(),1,null);
+            startActivity(new Intent(getContext(), NoInternetActivity.class));
         }
         return view;
     }

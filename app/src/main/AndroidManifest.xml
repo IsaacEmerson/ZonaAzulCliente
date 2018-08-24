@@ -24,9 +24,6 @@
             android:name=".ui.activities.SplashScreen"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
-                <data android:scheme="syszona" />
-                <action android:name="android.intent.action.VIEW" />
-
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -59,7 +56,9 @@
         </receiver>
 
         <activity android:name=".ui.activities.NoInternetActivity" />
-        <activity android:name=".ui.activities.SignUpActivity"></activity>
+        <activity android:name=".ui.activities.SignUpActivity" />
+        <activity android:name=".ui.activities.ConfirmEmailActivity" />
+        <activity android:name=".ui.activities.FinalRegisterActivity"></activity>
     </application>
 
 </manifest>

@@ -30,12 +30,11 @@
             android:layout_height="wrap_content" />
 
         <EditText
-            android:inputType="text"
+            android:inputType="textCapCharacters"
             android:id="@+id/edt_plaque"
             android:maxLength="8"
             android:textAlignment="center"
             android:hint="ABC1234"
-            android:textAllCaps="true"
             android:textSize="14sp"
             android:layout_margin="10dp"
             android:layout_gravity="center_horizontal"

@@ -34,13 +34,11 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
 
-        binding.moreInfo.setOnClickListener(new View.OnClickListener() {
+        binding.hadCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "http://syszona.com.br";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
-                startActivity(i);
+                startActivity(new Intent(SignUpActivity.this,ConfirmEmailActivity.class));
+                finish();
             }
         });
 
@@ -59,6 +57,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String pass = binding.password.getText().toString().trim();
                 String cPass = binding.confirmPassword.getText().toString().trim();
                 String name = binding.userName.getText().toString().trim();
+
                 if(isValidEmailAndPass(name,email,pass)){
                     if(isOnline(getApplicationContext())){
                         if(pass.equals(cPass)){
@@ -88,7 +87,11 @@ public class SignUpActivity extends AppCompatActivity {
             public void onResponse(Call<Success> call, Response<Success> response) {
 
                 if(response.code()>=200 && response.code()<300){
+
                     message(response.body().getMessage(),getApplicationContext(),1,null);
+                    startActivity(new Intent(SignUpActivity.this, ConfirmEmailActivity.class));
+                    finish();
+
                 }else if(response.code()>=400 && response.code()<500){
                     message("Erro ao cadastrar tente novamente",getApplicationContext(),1,null);
                 }else{
@@ -118,6 +121,9 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         }else if(TextUtils.isEmpty(password)){
             binding.password.setError("Preencha a senha");
+            return false;
+        }else if(password.length()<6){
+            binding.password.setError("A senha deve ter mais de 5 caracteres");
             return false;
         }else if(!email.contains("@")){
             message("O email parece não ser válido..",getApplicationContext(),1,null);

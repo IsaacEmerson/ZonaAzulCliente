@@ -16,16 +16,15 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import br.com.syszona.syszonazonaazulclienteapp.R;
-import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.AlarmsFragment;
 import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.BuyCreditsFragment;
 import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.HistoryFragment;
 import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.MainFragment;
 import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.MyCreditCardsFragment;
 import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.ProfileFragment;
+import br.com.syszona.syszonazonaazulclienteapp.ui.fragments.VacanciesFragment;
 import br.com.syszona.syszonazonaazulclienteapp.utils.UserSession;
 
 import static br.com.syszona.syszonazonaazulclienteapp.utils.MessageUtil.message;
-import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -123,7 +122,7 @@ public class MainActivity extends AppCompatActivity
                 fragment = new HistoryFragment();
                 break;
             case R.id.lookForVacancies:
-                Toast.makeText(this, "Em Breve..", Toast.LENGTH_SHORT).show();
+                fragment = new VacanciesFragment();
                 break;
             case R.id.logout:
                 UserSession.getInstance(getApplicationContext()).clearSession();

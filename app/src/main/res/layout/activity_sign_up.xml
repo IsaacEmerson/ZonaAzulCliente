@@ -128,12 +128,12 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/moreInfo"
+                    android:id="@+id/hadCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:paddingTop="5dp"
-                    android:text="Mais informações ?" />
+                    android:text="Já tem um código de ativação ?" />
 
                 <Button
                     android:id="@+id/btnRegister"

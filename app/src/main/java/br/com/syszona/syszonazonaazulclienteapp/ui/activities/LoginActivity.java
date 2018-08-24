@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         binding.fogotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "http://syszona.com.br/password/";
+                String url = "http://syszona.com.br/password/reset";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                finish();
             }
         });
 

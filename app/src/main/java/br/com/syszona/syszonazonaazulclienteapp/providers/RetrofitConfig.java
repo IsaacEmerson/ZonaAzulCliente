@@ -7,8 +7,8 @@ public class RetrofitConfig {
 
     private final Retrofit retrofit;
 
-    //private final String endpoint = "http://syszona.com.br/api/";
-    private final String endpoint = "http://192.168.1.15/estacionamento-zona-azul/public/api/";
+    public static final String endpoint = "http://syszona.com.br/api/";
+    //private final String endpoint = "http://192.168.1.15/estacionamento-zona-azul/public/api/";
     //private final String endpoint = "http://zona-azul-teste.herokuapp.com/api/";
 
     public RetrofitConfig() {

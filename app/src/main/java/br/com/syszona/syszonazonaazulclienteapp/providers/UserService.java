@@ -1,6 +1,7 @@
 package br.com.syszona.syszonazonaazulclienteapp.providers;
 
 import br.com.syszona.syszonazonaazulclienteapp.models.ActiveCard;
+import br.com.syszona.syszonazonaazulclienteapp.models.ActivePlaques;
 import br.com.syszona.syszonazonaazulclienteapp.models.AddressesList;
 import br.com.syszona.syszonazonaazulclienteapp.models.Balance;
 import br.com.syszona.syszonazonaazulclienteapp.models.CardList;
@@ -12,6 +13,7 @@ import br.com.syszona.syszonazonaazulclienteapp.models.Success;
 import br.com.syszona.syszonazonaazulclienteapp.models.Token;
 import br.com.syszona.syszonazonaazulclienteapp.models.User;
 import br.com.syszona.syszonazonaazulclienteapp.models.UserData;
+import br.com.syszona.syszonazonaazulclienteapp.models.UserInitialData;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.DELETE;
@@ -33,6 +35,9 @@ public interface UserService {
     @GET("balance")
     Call<Balance> getUserBalance(@Header("Authorization") String authHeader);
 
+    @GET("checkVersion")
+    Call<Success> checkVersion(@Query("app") int app,@Query("version") String version);
+
     @GET("cards")
     Call<CardList> getUserCards(@Header("Authorization") String authHeader);
 
@@ -41,6 +46,9 @@ public interface UserService {
 
     @GET("cities")
     Call<CitiesList> getCities(@Header("Authorization") String authHeader);
+
+    @GET("cities")
+    Call<CitiesList> getCitiesRegister();
 
     @GET("historics")
     Call<HistoricList> getUserHistoric(@Header("Authorization") String authHeader,@Query("page") int page);
@@ -51,15 +59,39 @@ public interface UserService {
     @GET("rates")
     Call<RateList> getRatesFromCity(@Query("city_id") int city_id,@Header("Authorization") String authHeader);
 
-    @POST("activeCard")
-    Call<ActiveCard> activeCard(@Header("Authorization") String authHeader, @Query("city_id") int city_id
-    , @Query("rate_id") int rate_id, @Query("plaque_id") int plaque_id);
+    @GET("activePlaques")
+    Call<ActivePlaques> getactivePlaques(@Header("Authorization") String authHeader);
 
-    @POST("plaques")
-    Call<ActiveCard> addPlaque(@Header("Authorization") String authHeader, @Query("plaque") String plaque, @Query("vehicle_id") int vehicle_id);
+    @POST("activeCard")
+    Call<Success> activeCard(@Header("Authorization") String authHeader, @Query("city_id") int city_id
+    , @Query("rate_id") int rate_id, @Query("plaque_id") int plaque_id);
 
     @POST("register")
     Call<Success> registerClient(@Query("name") String name, @Query("email") String email, @Query("password") String password, @Query("password_confirmation") String password_confirmation);
+
+    @POST("plaques")
+    Call<Success> addPlaque(@Header("Authorization") String authHeader, @Query("plaque") String plaque, @Query("vehicle_id") int vehicle_id);
+
+    @POST("cards")
+    Call<Success> buyCards(@Header("Authorization") String authHeader,@Query("cards") int quant, @Query("city_id") int city_id, @Query("id") int rate_id);
+
+    @GET("register/confirm/account")
+    Call<UserInitialData> confirmAccount(@Query("token") String token);
+
+    /*@POST("register/confirm/account")
+    Call<Success> finalizeRegister(@Query("token") String token, @Query("vehicle_id") int vehicle_id
+            , @Query("cell_phone") String cell_phone, @Query("plaque") String plaque,
+                                  @Query("cpf") String cpf, @Query("zip_code") String zip_code
+            , @Query("number") int number, @Query("city") String city,
+                                  @Query("state") String state, @Query("street") String street
+            , @Query("neighborhood") String neighborhood, @Query("complement") String complement,
+                                  @Query("birth_date") String birth_date, @Query("city_actual") int city_actual);
+                                  */
+    @POST("register/confirm/account")
+    Call<Success> finalizeRegister(@Query("token") String token, @Query("vehicle_id") int vehicle_id
+            , @Query("cell_phone") String cell_phone, @Query("plaque") String plaque,
+                                   @Query("cpf") String cpf,
+                                   @Query("birth_date") String birth_date, @Query("city_actual") int city_actual);
 
     @DELETE("plaques")
     Call<ActiveCard> deletePlaque(@Header("Authorization") String authHeader,@Query("id") int id);
